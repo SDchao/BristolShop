@@ -1,4 +1,5 @@
 import poundland
+import waitrose
 from classes import Item
 from config import MAX_RESULT
 from logger import logger
@@ -10,7 +11,8 @@ def item_sort(elem: Item):
     return elem.price
 
 
-def get_item_list(keyword: str, max_res: int = MAX_RESULT, en_tesco=True, en_sains=True, en_poundland=True):
+def get_item_list(keyword: str, max_res: int = MAX_RESULT, en_tesco=True, en_sains=True, en_poundland=True,
+                  en_waitrose=True):
     logger.info(f"Querying {keyword} item list")
     items = []
     if en_tesco:
@@ -25,6 +27,11 @@ def get_item_list(keyword: str, max_res: int = MAX_RESULT, en_tesco=True, en_sai
 
     if en_poundland:
         t = poundland.query(keyword)
+        if t:
+            items += t
+
+    if en_waitrose:
+        t = waitrose.query(keyword)
         if t:
             items += t
     logger.info(f"All queries completed, total result: {len(items)}")
