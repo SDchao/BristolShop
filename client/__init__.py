@@ -19,11 +19,11 @@ def get(url: str, headers=None, params=None):
     return ret
 
 
-def post(url: str, headers=None, data=None):
+def post(url: str, headers=None, data=None, j=None):
     if headers is None:
         headers = {}
     if data is None:
         data = {}
 
-    ret = s.post(url, headers=headers, data=data)
+    ret = s.post(url, headers=headers, data=data, json=j)
     return ret

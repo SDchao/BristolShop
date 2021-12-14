@@ -44,8 +44,10 @@ def get_price(kw):
                             en_poundland = False
 
     kw = args[-1]
-    items = manager.get_item_list(kw, limit, en_tesco, en_sains, en_poundland)
-    res = {"items": [a.to_dict() for a in items]}
+    res = {}
+    if kw:
+        items = manager.get_item_list(kw, limit, en_tesco, en_sains, en_poundland)
+        res = {"items": [a.to_dict() for a in items]}
     return flask.jsonify(res)
 
 

@@ -32,9 +32,13 @@
         data = JSON.parse(j)
         let table = document.getElementById("result")
 
-        while (table.childElementCount > 1) {
-            table.removeChild(table.childNodes[1])
-        }
+        table.innerHTML = "    <tr>\n" +
+            "        <th>名称</th>\n" +
+            "        <th>图片</th>\n" +
+            "        <th>价格</th>\n" +
+            "        <th>来源</th>\n" +
+            "        <th>单位价格</th>\n" +
+            "    </tr>"
 
         for (const item of data.items) {
             let row = document.createElement("tr")

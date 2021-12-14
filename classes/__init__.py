@@ -20,10 +20,10 @@ class Item:
         return f"{self.name} - £ {self.price} - {self.store}"
 
     def to_dict(self):
-        d = {"name": self.name, "imgurl": self.image_url, "url": self.url, "price": f"£{self.price}",
+        d = {"name": self.name, "imgurl": self.image_url, "url": self.url, "price": f"£{self.price:.2f}",
              "store": self.store,
-             "unitprice": "- / -"}
+             "unitprice": "-/-"}
         if hasattr(self, "unit_price"):
-            d["unit_price"] = f"£{self.unit_price.price} / {self.unit_price.measure}"
+            d["unitprice"] = f"£{self.unit_price.price:.2f}/{self.unit_price.measure}"
 
         return d
