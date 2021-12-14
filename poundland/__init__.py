@@ -10,9 +10,10 @@ from bs4 import BeautifulSoup
 def query(keyword: str):
     logger.debug(f"Querying {keyword} in poundland")
     ret = client.get("https://www.poundland.co.uk/catalogsearch/result/",
-                     params={"q": keyword, "product_list_limit": 36})
+                     params={"q": keyword, "product_list_limit": 36}, redirect=False)
     res = []
     soup = BeautifulSoup(ret.content, "html.parser")
+
     infos = soup.find_all("div", class_="c-product__inner-container product-item-info")
 
     for info in infos:
@@ -38,5 +39,5 @@ def query(keyword: str):
 
 
 if __name__ == '__main__':
-    for i in query("chocolate"):
+    for i in query("Knoppers"):
         print(i)

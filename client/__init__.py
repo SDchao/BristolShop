@@ -10,12 +10,12 @@ s.headers.update({
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6"})
 
 
-def get(url: str, headers=None, params=None):
+def get(url: str, headers=None, params=None, redirect=True):
     if params is None:
         params = {}
     if headers is None:
         headers = {}
-    ret = s.get(url, headers=headers, params=params)
+    ret = s.get(url, headers=headers, params=params, allow_redirects=redirect)
     return ret
 
 
