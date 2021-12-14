@@ -47,7 +47,6 @@ export default {
     },
     methods: {
         parseData(text) {
-            this.canQuery = true
             try {
                 let data = JSON.parse(text)
                 this.tableData = data.items
@@ -61,6 +60,7 @@ export default {
             this.canQuery = false
             let request = new XMLHttpRequest()
             request.onreadystatechange = () => {
+                this.canQuery = true
                 if (request.readyState === 4) {
                     if (request.status === 200) {
                         this.parseData(request.responseText)
