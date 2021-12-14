@@ -24,7 +24,7 @@
                               style="max-width: 50px; max-height: 50px"/>
                 </template>
             </el-table-column>
-            <el-table-column prop="price" label="价格" sortable align="center" width="65"/>
+            <el-table-column prop="price" label="价格" sortable align="center"/>
             <el-table-column prop="store" label="来源" align="center"/>
             <el-table-column prop="unitprice" label="单价" align="center"/>
         </el-table>
