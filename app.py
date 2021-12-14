@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 @app.route("/query/<kw>")
 def get_price(kw):
-    items = []
     args = kw.split("@")
 
     en_tesco = True
@@ -16,8 +15,9 @@ def get_price(kw):
     en_poundland = True
     en_waitrose = True
     limit = 30
+    expect = -1.0
     if len(args) > 1:
-        for arg in args:
+        for arg in args[:-1]:
             arg: str
             if arg:
                 if arg.startswith("l"):
@@ -48,11 +48,13 @@ def get_price(kw):
                             en_poundland = False
                         elif en_str == "w":
                             en_waitrose = False
+                elif arg.startswith("p"):
+                    expect = float(arg[1:])
 
     kw = args[-1]
     res = {}
     if kw:
-        items = manager.get_item_list(kw, limit, en_tesco, en_sains, en_poundland, en_waitrose)
+        items = manager.get_item_list(kw, limit, expect, en_tesco, en_sains, en_poundland, en_waitrose)
         res = {"items": [a.to_dict() for a in items]}
     return flask.jsonify(res)
 
