@@ -1,6 +1,7 @@
 import re
 from typing import List
 
+import requests
 import simplejson
 
 import client
@@ -23,9 +24,14 @@ def query(kw: str, max_res: int = MAX_RESULT) -> List[Item]:
         }
     }
     }
-    ret = client.post("https://www.waitrose.com/api/content-prod/v2/cms"
-                      "/publish/productcontent/search/-1?clientType=WEB_APP",
-                      j=p_j, headers={"authorization": "Bearer unauthenticated"})
+    try:
+        ret = client.post("https://www.waitrose.com/api/content-prod/v2/cms"
+                          "/publish/productcontent/search/-1?clientType=WEB_APP",
+                          j=p_j, headers={"authorization": "Bearer unauthenticated"})
+    except requests.exceptions.RequestException as e:
+        logger.warning("Unable to query waitrose")
+        logger.warning(e)
+        return []
     try:
         j = ret.json()
     except simplejson.JSONDecodeError:

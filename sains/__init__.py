@@ -1,5 +1,6 @@
 from typing import List
 
+import requests
 import simplejson
 
 import client
@@ -24,8 +25,13 @@ def query(keyword: str, max_res=MAX_QUERY) -> List[Item]:
 
     params = {"filter[keyword]": keyword, "include[PRODUCT_AD]": "citrus", "page_number": 1, "page_size": max_res,
               "sort_order": "FAVOURITES_FIRST"}
+    try:
+        ret = client.get("https://www.sainsburys.co.uk/groceries-api/gol-services/product/v1/product", params=params)
 
-    ret = client.get("https://www.sainsburys.co.uk/groceries-api/gol-services/product/v1/product", params=params)
+    except requests.exceptions.RequestException as e:
+        logger.warning("Unable to query sains")
+        logger.warning(e)
+        return []
     try:
         r_json = ret.json()
     except simplejson.JSONDecodeError:

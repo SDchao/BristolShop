@@ -1,5 +1,7 @@
 import re
 
+import requests.exceptions
+
 import client
 from classes import Item
 from logger import logger
@@ -9,8 +11,14 @@ from bs4 import BeautifulSoup
 @logger.catch()
 def query(keyword: str):
     logger.debug(f"Querying {keyword} in poundland")
-    ret = client.get("https://www.poundland.co.uk/catalogsearch/result/",
-                     params={"q": keyword, "product_list_limit": 36}, redirect=False)
+    try:
+        ret = client.get("https://www.poundland.co.uk/catalogsearch/result/",
+                         params={"q": keyword, "product_list_limit": 36}, redirect=False)
+    except requests.exceptions.RequestException as e:
+        logger.warning("Unable to query poundland")
+        logger.warning(e)
+        return []
+
     res = []
     soup = BeautifulSoup(ret.content, "html.parser")
 

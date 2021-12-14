@@ -15,7 +15,7 @@ def get(url: str, headers=None, params=None, redirect=True):
         params = {}
     if headers is None:
         headers = {}
-    ret = s.get(url, headers=headers, params=params, allow_redirects=redirect)
+    ret = s.get(url, headers=headers, params=params, allow_redirects=redirect, timeout=3)
     return ret
 
 
@@ -25,5 +25,5 @@ def post(url: str, headers=None, data=None, j=None):
     if data is None:
         data = {}
 
-    ret = s.post(url, headers=headers, data=data, json=j)
+    ret = s.post(url, headers=headers, data=data, json=j, timeout=3)
     return ret

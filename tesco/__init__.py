@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 from typing import List
 
+import requests
 from bs4 import BeautifulSoup
 
 import client
@@ -11,6 +12,7 @@ from logger import logger
 from config import WARMUP_DURATION
 
 warmup_time = datetime.fromtimestamp(0)
+
 
 @logger.catch
 def query(keyword: str) -> List[Item]:
@@ -21,8 +23,12 @@ def query(keyword: str) -> List[Item]:
     #     client.get("https://www.tesco.com/")
     #     warmup_time = datetime.now()
     #     logger.info("Tesco warmed up")
-
-    ret = client.get("https://www.tesco.com/groceries/en-GB/search", params={"query": keyword})
+    try:
+        ret = client.get("https://www.tesco.com/groceries/en-GB/search", params={"query": keyword})
+    except requests.exceptions.RequestException as e:
+        logger.warning("Unable to query tesco")
+        logger.warning(e)
+        return []
 
     res = []
 
