@@ -3,6 +3,7 @@
         <h1>究极无敌超市比价</h1>
         <div class="input-field">
             <el-input v-model="kw" clearable placeholder="请输入商品名称"
+                      @keydown.enter="queryItem"
                       style="margin: 5px;"></el-input>
             <el-button type="primary"
                        style="margin: 5px;"
