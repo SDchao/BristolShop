@@ -50,7 +50,7 @@ def query(kw: str, max_res: int = MAX_RESULT) -> List[Item]:
                                         c_unit_price["quantity"]["amount"])
 
             item.rating = detail["reviews"]["averageRating"]
-            item.store = "waitrose"
+            item.store = "Waitrose"
             res.append(item)
         except KeyError as e:
             logger.warning("Unable to solve following product")
