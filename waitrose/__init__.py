@@ -10,6 +10,7 @@ from logger import logger
 
 
 def query(kw: str, max_res: int = MAX_RESULT) -> List[Item]:
+    logger.debug(f"Querying {kw} in waitrose")
     p_j = {"customerSearchRequest": {
         "queryParams": {
             "size": max_res,
@@ -41,7 +42,8 @@ def query(kw: str, max_res: int = MAX_RESULT) -> List[Item]:
             item = Item()
             item.name = detail["name"]
             item.image_url = detail["thumbnail"]
-            item.url = re.sub(r"\W+", "-", item.name.lower())
+            item.url = "https://www.waitrose.com/ecom/products/" + re.sub(r"\W+", "-", item.name.lower()) + "/" + \
+                       detail["id"]
             c_unit_price = detail["currentSaleUnitPrice"]
             item.price = float(c_unit_price["price"]["amount"])
             item.unit_price = UnitPrice(item.price, c_unit_price["quantity"]["uom"],
@@ -54,7 +56,7 @@ def query(kw: str, max_res: int = MAX_RESULT) -> List[Item]:
             logger.warning("Unable to solve following product")
             logger.warning(e)
             logger.warning(product)
-
+    logger.debug(f"Waitrose completed, total {len(res)}")
     return res
 
 
