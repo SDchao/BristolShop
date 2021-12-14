@@ -1,7 +1,3 @@
-import json
-from collections import namedtuple
-
-
 class UnitPrice:
     price: float
     measure: str

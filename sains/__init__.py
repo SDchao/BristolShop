@@ -13,7 +13,7 @@ warmup_time = datetime.fromtimestamp(0)
 
 
 @logger.catch
-def query(keyword: str) -> List[Item]:
+def query(keyword: str, max_res=MAX_QUERY) -> List[Item]:
     logger.debug(f"Querying {keyword} in sains")
     # global warmup_time
     # delta_time = datetime.now() - warmup_time
@@ -22,7 +22,7 @@ def query(keyword: str) -> List[Item]:
     #     warmup_time = datetime.now()
     #     logger.info("Sains warmed up")
 
-    params = {"filter[keyword]": keyword, "include[PRODUCT_AD]": "citrus", "page_number": 1, "page_size": MAX_QUERY,
+    params = {"filter[keyword]": keyword, "include[PRODUCT_AD]": "citrus", "page_number": 1, "page_size": max_res,
               "sort_order": "FAVOURITES_FIRST"}
 
     ret = client.get("https://www.sainsburys.co.uk/groceries-api/gol-services/product/v1/product", params=params)
@@ -37,13 +37,16 @@ def query(keyword: str) -> List[Item]:
     # JSON parse
     for product in r_json["products"]:
         try:
+            if product["product_type"] == "CATCHWEIGHT":
+                product["unit_price"] = product["catchweight"][0]["unit_price"]
+                product["retail_price"] = product["catchweight"][0]["retail_price"]
             item = Item()
             item.name = product["name"]
             item.image_url = product["image"]
             item.url = product["full_url"]
             item.unit_price = UnitPrice(product["unit_price"]["price"], product["unit_price"]["measure"],
                                         product["unit_price"]["measure_amount"])
-            item.price = product["retail_price"]["price"]
+            item.price = float(product["retail_price"]["price"])
             item.rating = product["reviews"]["average_rating"]
             item.store = "Sainsbury"
 
