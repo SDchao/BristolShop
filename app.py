@@ -1,9 +1,11 @@
 import flask
-from flask import Flask
+from flask import Flask, render_template
 
 import manager
 
-app = Flask(__name__)
+app = Flask(__name__,
+            template_folder="dist",
+            static_folder="dist/static")
 
 
 @app.route("/query/<kw>")
@@ -61,10 +63,12 @@ def get_price(kw):
 
 @app.route("/")
 def home():
-    return app.send_static_file("home.html")
+    # return app.send_static_file("index.html")
+    return render_template("index.html")
 
 
 if __name__ == '__main__':
     from waitress import serve
 
-    serve(app, host="0.0.0.0", port=6768)
+    # serve(app, host="0.0.0.0", port=6768)
+    app.run(host="0.0.0.0", port=6768)
